@@ -2,7 +2,7 @@
     <head>
         <title>TRAPPIST-1 Age Calculator</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" type="text/css" href="bootstrap.min.css"></link>
+        <link rel="stylesheet" type="text/css" href="bootstrap.min.css">
     </head>
     <body onload="start();">
         <div style="text-align: center" class="container-fluid">
@@ -178,26 +178,35 @@
     </body>
     <script src="moment.js"></script>
     <script>
+        //create the global variables
         var momentNow;
         var DOBMonth;
         var DOBDayList;
         var DOBYear;
         
+        //this function runs when the webpage has finished loading
         function start() {
+            //create a new moment
             momentNow = moment();
             
+            //display the date on the web page
             document.getElementById("currentDate").innerHTML = "Current Date: " + momentNow.format('MM/DD/YYYY');
+            //this gets the selection input which will hold all of the days of the month
             DOBDayList = document.getElementById("DOBDay");
             
+            //call the next function
             setMonth();
         }
         
+        //this function is called whenever the year or month is changed, because the amount of days has to be recalculated
         function setMonth() {
+            //get the current values of the year and month fields, i need this to figure how how many days to list e.g. 31 in January, 31 in March and 28 or 29 in February depending on whether it's a leap year or not
             DOBMonth = document.getElementById("DOBMonth").value;
             DOBYear = document.getElementById("DOBYear").value;
             
             DOBMonth = parseInt(DOBMonth);
             
+            //if it's any of these months, display 31 days
             if((DOBMonth === 1) || (DOBMonth === 3) || (DOBMonth === 5) || (DOBMonth === 7) || (DOBMonth === 8) || (DOBMonth === 10) || (DOBMonth === 12)){
                 DOBDayList.options.length = 0;
                 for(var dayElements = 1; dayElements < 32; dayElements++){
@@ -207,6 +216,7 @@
                     DOBDayList.appendChild(option);
                 }
             } else if ((DOBMonth === 4)|| (DOBMonth === 6) || (DOBMonth === 9) || (DOBMonth === 11)) {
+                //else if it's any of these do 30 days
                 DOBDayList.options.length = 0;
                 for(var dayElements = 1; dayElements < 31; dayElements++){
                     var option = document.createElement("option");
@@ -215,7 +225,10 @@
                     DOBDayList.appendChild(option);
                 }
             } else if (DOBMonth === 2) {
+                //if it's february, everyone panic
+                //this if statement figues out if it's a leap year
                 if(((DOBYear % 4 == 0) && (DOBYear % 100 != 0)) || (DOBYear % 400 == 0)){
+                    //if it is, display 29 days
                     DOBDayList.options.length = 0;
                     for(var dayElements = 1; dayElements < 30; dayElements++){
                         var option = document.createElement("option");
@@ -224,6 +237,7 @@
                         DOBDayList.appendChild(option);
                     }
                 } else {
+                    //else display 28
                     DOBDayList.options.length = 0;
                     for(var dayElements = 1; dayElements < 29; dayElements++){
                         var option = document.createElement("option");
@@ -233,24 +247,31 @@
                     }
                 }
             }
-            
+            //set the selected day to the first element
             DOBDayList.selectedIndex = 0;
+            //call the calculate function
             calculateAges();
         }
         
         function calculateAges() {
+            //get all the current values from the inputs
             var DOBDay = document.getElementById("DOBDay").value;
             DOBMonth = document.getElementById("DOBMonth").value;
             DOBYear = document.getElementById("DOBYear").value;
             
+            //merge them into one date
             var DOBTotal = moment(DOBMonth + "/" + DOBDay + "/" + DOBYear, "MM DD YYYY");
             
+            //calculate the difference between the birthday the user entered and the current date (stored in the momentNow variable)
             var daysOld = momentNow.diff(DOBTotal, "days");
+            //figure out how many earth years this is
             var earthAge = daysOld / 365.26;
             var trappistAge;
             
+            //get the current selected planet
             var trappistPlanet = document.getElementById("trappistPlanet").value;
             
+            //divide how many earth days old you are by the planets orbit time in days to figure out how many years old you would be on said planet
             if(trappistPlanet == "b"){
                 trappistAge = daysOld / 1.51;
             }
@@ -279,6 +300,7 @@
                 trappistAge = daysOld / 20;
             }
             
+            //update all of the displays to show the different values, round them using Math.floor, because we don't say 18.7 years old, you're 18
             document.getElementById("ageDays").innerHTML = "<strong>You are: </strong>" + daysOld + " days old";
             document.getElementById("earthAge").innerHTML = "<strong>You are: </strong>" + Math.floor(earthAge) + " years old on Earth";
             document.getElementById("trappistAge").innerHTML = "<strong>You are: </strong>" + Math.floor(trappistAge) + " years old on TRAPPIST-1 " + trappistPlanet;
