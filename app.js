@@ -14,6 +14,6 @@ app.get("*", function(req, res){
     res.render("404");
 });
 
-app.listen(8005, function(){
+app.listen(8002, function(){
    console.log("TRAPPIST-1 age calculator running..."); 
 });
