@@ -3,6 +3,6 @@ A small and simple web page that allows you to calculate how many years old you 
 
 Technologies used;
 
-Frontend: HTML, CSS, Bootstrap and JavaScript
+Frontend: HTML, CSS, Bootstrap, JavaScript and Moment.js
 
 Backend: NodeJS and Express
