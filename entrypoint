@@ -1,0 +1,11 @@
+#!/bin/sh
+
+cd /app
+
+npm install -g nodaemon
+
+npm install express --save
+
+npm install ejs
+
+node app.js
